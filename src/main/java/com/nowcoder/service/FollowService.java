@@ -48,7 +48,6 @@ public class FollowService {
     public boolean unfollow(int userId,int entityType,int entityId){
         String followerKey = RedisKeyUtil.getFollowerKey(entityType,entityId);
         String followeeKey = RedisKeyUtil.getFolloweeKey(userId, entityType);
-        Date date = new Date();
         // 实体的粉丝增加当前用户
         Jedis jedis = jedisAdapter.getJedis();
         Transaction tx = jedisAdapter.multi(jedis);
@@ -60,9 +59,9 @@ public class FollowService {
         return ret.size() == 2&&(Long)ret.get(0) > 0 && (Long)ret.get(1) > 0;
     }
 
-    private List<Integer> getIdsFromSet(Set<String> idset){
+    private List<Integer> getIdsFromSet(Set<String> IDset){
         List<Integer> ids = new ArrayList<>();
-        for(String str:idset){
+        for(String str:IDset){
             ids.add(Integer.parseInt(str));
         }
         return ids;

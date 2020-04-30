@@ -7,6 +7,12 @@ import java.util.Date;
 @Component
 public class Comment {
     private int id;
+    private int userId;
+    private int entityId;
+    private int entityType;
+    private String content;
+    private Date createdDate;
+    private int status;
 
     public int getId() {
         return id;
@@ -63,12 +69,5 @@ public class Comment {
     public void setStatus(int status) {
         this.status = status;
     }
-
-    private int userId;
-    private int entityId;
-    private int entityType;
-    private String content;
-    private Date createdDate;
-    private int status;
 
 }

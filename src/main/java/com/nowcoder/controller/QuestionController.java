@@ -1,10 +1,7 @@
 package com.nowcoder.controller;
 
 import com.nowcoder.model.*;
-import com.nowcoder.service.CommentService;
-import com.nowcoder.service.LikeService;
-import com.nowcoder.service.QuestionService;
-import com.nowcoder.service.UserService;
+import com.nowcoder.service.*;
 import com.nowcoder.util.WendaUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -33,6 +30,9 @@ public class QuestionController {
 
     @Autowired
     LikeService likeService;
+
+    @Autowired
+    FollowService followService;
     private static final Logger logger = LoggerFactory.getLogger(QuestionController.class);
     @RequestMapping(value = "/question/add",method = {RequestMethod.POST})
     @ResponseBody
@@ -59,7 +59,7 @@ public class QuestionController {
         return WendaUtil.getJSONString(1,"失败");
     }
 
-    @RequestMapping(value = "/question/{qid}")
+    @RequestMapping(value = "/question/{qid}",method = {RequestMethod.GET})
     public String questionDetail(Model model,@PathVariable("qid") int qid){
         Question question = questionService.selectById(qid);
         model.addAttribute("question",question);
@@ -80,7 +80,25 @@ public class QuestionController {
             comments.add(vo);
         }
         model.addAttribute("comments",comments);
-        model.addAttribute("user",userService.getUser(question.getUserId()));
+        List<ViewObject> followUsers = new ArrayList<>();
+        List<Integer> users = followService.getFollowers(EntityType.ENTITY_QUESTION,qid,20);
+        for(Integer userId : users){
+            ViewObject vo = new ViewObject();
+            User u = userService.getUser(userId);
+            if(u == null){
+                continue;
+            }
+            vo.set("name",u.getName());
+            vo.set("headUrl",u.getHeadUrl());
+            vo.set("id",u.getId());
+            followUsers.add(vo);
+        }
+        model.addAttribute("followUsers",followUsers);
+        if(hostHolder.getUser() != null){
+            model.addAttribute("followed",followService.isFollower(hostHolder.getUser().getId(),EntityType.ENTITY_QUESTION,qid));
+        }else{
+            model.addAttribute("followed",false);
+        }
         return "detail";
     }
 
