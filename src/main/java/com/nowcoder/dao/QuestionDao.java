@@ -2,11 +2,13 @@ package com.nowcoder.dao;
 
 import com.nowcoder.model.Question;
 import org.apache.ibatis.annotations.*;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Mapper
-public interface QuestionDao {
+@Repository
+public interface QuestionDao{
     String TABLE_NAME = " question ";
     String INSERT_FIELDS = " title, content, created_date, user_id, comment_count ";
     String SELECT_FIELDS = " id, " + INSERT_FIELDS;

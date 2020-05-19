@@ -1,7 +1,6 @@
 package com.nowcoder.service;
 
 import com.nowcoder.dao.QuestionDao;
-import com.nowcoder.model.HostHolder;
 import com.nowcoder.model.Question;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

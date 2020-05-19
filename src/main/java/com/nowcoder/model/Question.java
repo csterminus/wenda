@@ -1,10 +1,12 @@
 package com.nowcoder.model;
 
+import org.springframework.data.elasticsearch.annotations.Document;
 import org.springframework.stereotype.Component;
 
 import java.util.Date;
 
 @Component
+@Document(indexName = "wenda", type = "question")
 public class Question {
     private int id;
     private String title;
